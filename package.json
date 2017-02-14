@@ -7,6 +7,9 @@
     "type": "git",
     "url": "https://github.com/polastre/united"
   },
+  "scripts": {
+    "start": "forever worker.js"
+  },
   "bugs": {
     "url": "https://github.com/polastre/united/issues"
   },
@@ -17,11 +20,11 @@
   ],
   "dependencies": {
     "async": "1.5.x",
+    "colors": "*",
+    "forever": "^0.15.3",
     "lodash": "~3.10.1",
-    "request": "2.65.x",
-    "colors": "*"
+    "request": "2.65.x"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "license": "Apache-2.0"
 }

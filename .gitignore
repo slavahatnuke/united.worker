@@ -55,3 +55,6 @@ nosetests.xml
 
 # node
 node_modules/
+.idea
+*.log
+worker.config.json
