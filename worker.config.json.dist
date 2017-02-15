@@ -8,13 +8,22 @@
   },
   "jobs": [
     {
-      "title": "Job 1",
+      "title": "EWR > ORD Direct Only",
       "origin": "EWR",
       "destination": "ORD",
       "start": "2/24/2017",
       "end": "2/28/2017",
-      "direct": false,
-      "period": 600
+      "directOnly": true,
+      "period": "0 */10 * * * *"
+    },
+    {
+      "title": "EWR > ORD",
+      "origin": "EWR",
+      "destination": "ORD",
+      "start": "2/24/2017",
+      "end": "2/28/2017",
+      "directOnly": false,
+      "period": "0 */10 * * * *"
     }
   ]
 }
