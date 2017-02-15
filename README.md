@@ -1,5 +1,6 @@
 United Upgrades
 ======
+ A tool to find upgrade availability on United Airlines. Includes web front-end implementation.
 
 
 ## How to deploy on Google App Engine
@@ -25,9 +26,6 @@ United Upgrades
 1. `npm run deploy` - when you setup all jobs and notifications just deploy this.
 
     
- 
-A tool to find upgrade availability on United Airlines. Includes web front-end implementation.
-
 ## united.js tool
 
 The main component is a node.js script that goes through the United.com search process.
