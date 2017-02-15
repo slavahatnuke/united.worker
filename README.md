@@ -17,6 +17,8 @@ United Upgrades
 1. setup your credentials for notification in the `worker.config.json`  
     - recipient all reports will be sent to this email
     - google account and password to have access for sending emails
+        * if you don't want to place your google account just make new google account for these goals.
+        * Please check this article to Enable IMAP [https://support.google.com/mail/answer/7126229?hl=en](https://support.google.com/mail/answer/7126229?hl=en)
 1. setup your jobs by example in the `worker.config.json` jobs section, its array
     - please pay your attention on `"period": "0 */10 * * * *"` 
     - its cron schedule by default it will check updates every `10 mins` more info about schedule [https://www.npmjs.com/package/cron](https://www.npmjs.com/package/cron) or unix/linux cron schedule 
