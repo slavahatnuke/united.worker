@@ -2,7 +2,7 @@
   "notification": {
     "recipient": "slava.hatnuke@gmail.com",
     "credentials": {
-      "googleAccount": "some.google.id@gmail.com",
+      "googleAccount": "some.google.email@gmail.com",
       "googlePassword": "pass-here"
     }
   },

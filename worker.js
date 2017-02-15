@@ -88,3 +88,14 @@ new CronJobsHandler(workerConfig.jobs, function (job, next) {
         }
     });
 });
+
+
+var app = require('express')();
+
+app.get('/', function (req, res) {
+    res.send('OK');
+});
+
+app.listen(process.env.PORT || 8080, function () {
+    console.log('Health is OK');
+});

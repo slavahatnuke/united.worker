@@ -1,6 +1,31 @@
 United Upgrades
 ======
 
+
+## How to deploy on Google App Engine
+1. Open [https://console.cloud.google.com](https://console.cloud.google.com)
+1. Create project for example `united-worker-production`
+1. Install google cloud tool `gcloud` [https://cloud.google.com/sdk/](https://cloud.google.com/sdk/)
+1. Open Terminal
+1. `gcloud init` it will ask you to login and select your project
+1. Install [Node.js](https://nodejs.org)
+1. Extract app from ZIP
+1. `npm install` - setup app dependencies
+1. `cp worker.config.json.dist worker.config.json` copy default config
+1. open `worker.config.json` in the editor
+1. setup your credentials for notification in the `worker.config.json`  
+    - recipient all reports will be sent to this email
+    - google account and password to have access for sending emails
+1. setup your jobs by example in the `worker.config.json` jobs section, its array
+    - please pay your attention on `"period": "0 */10 * * * *"` 
+    - its cron schedule by default it will check updates every `10 mins` more info about schedule [https://www.npmjs.com/package/cron](https://www.npmjs.com/package/cron) or unix/linux cron schedule 
+1. `npm start` it will start app locally and you can debug your configuration
+    - you can setup `"period": "*/30 * * * * *"` it will grab updates every `30 secs` its good option to setup app
+    - please revert this back for production to `"period": "0 */10 * * * *"`
+1. `npm run deploy` - when you setup all jobs and notifications just deploy this.
+
+    
+ 
 A tool to find upgrade availability on United Airlines. Includes web front-end implementation.
 
 ## united.js tool
@@ -44,4 +69,3 @@ United Premier 1K members, Global Services, anyone holding an upgrade certificat
 ### How Do I Use This?
 
 This tool searches for **one-way** availability between the two specified airports.  It looks at every date, and determines whether immediately upgradable seats are available.  You should put your outbound flight in a one query, and then your potential return flight (and date range) as another.  When you find both outbound and return flights with upgrade availability, then go to [united.com](https://www.united.com/ual/en/us/flight-search/book-a-flight) and search with those specific dates.
-
