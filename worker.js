@@ -63,7 +63,14 @@ var jobMailer = new JobMailer(workerConfig.notification);
 new CronJobsHandler(workerConfig.jobs, function (job, next) {
     var exec = require('child_process').exec;
     var maxBuffer = 1024 * 1024 * 1024;
+
     var command = 'node ./united.js ' + job.origin + ' ' + job.destination + ' ' + job.start + ' ' + job.end;
+    command += ' --worker-request';
+
+    if(job.directOnly) {
+      command += ' --direct-only'
+    }
+
     console.log('> ' + command);
 
     exec(command, {maxBuffer: maxBuffer}, function (error, stdout, stderr) {

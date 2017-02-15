@@ -18,6 +18,9 @@
     "upgrades",
     "airlines"
   ],
+  "engines": {
+    "node": "6.9.5"
+  },
   "dependencies": {
     "async": "1.5.x",
     "colors": "*",

@@ -16,7 +16,9 @@ var config = {
   origin: args[0],
   destination: args[1],
   start: new Date(args[2]),
-  end: new Date(args[3])
+  end: new Date(args[3]),
+  directOnly: _.includes(args, '--direct-only'),
+  workerRequest: _.includes(args, '--worker-request')
 }
 
 var headers = {
@@ -126,14 +128,30 @@ var loadResultsByDate = function (date, cb) {
  * Pretty print the results so that they are human readable
  */
 var printResults = function (result) {
-  console.log('==============================')
-  if (result.upgrades.length > 0) {
+  // result.upgrades = [];
+
+  if(config.directOnly) {
+    result.upgrades = _.filter(result.upgrades, function (upgrade) {
+      var connectCounter = upgrade.Connections ? upgrade.Connections.length : 0;
+      return connectCounter == 0;
+    });
+  }
+
+
+  var upgradeCounter = result.upgrades.length;
+
+  if (upgradeCounter > 0) {
+    console.log('==============================')
     console.log(getDateString(result.date).green.bold)
   } else {
-    console.log(getDateString(result.date).red.bold)
+    !config.workerRequest && console.log('==============================')
+    !config.workerRequest && console.log(getDateString(result.date).red.bold)
   }
+
   var templateFile = fs.readFileSync('united_template.ejs')
   var template = _.template(templateFile)
+
+
   for (var i = 0; i < result.upgrades.length; i++) {
     console.log(template({ data: result.upgrades[i] }))
   }

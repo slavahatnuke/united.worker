@@ -31,7 +31,7 @@
       "DestinationAll": false,
       "returnARC": null,
       "connections": null,
-      "nonStopOnly": true,
+      "nonStopOnly": false,
       "nonStop": true,
       "oneStop": true,
       "twoPlusStop": true,
