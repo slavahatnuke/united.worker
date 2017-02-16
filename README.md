@@ -16,9 +16,16 @@ United Upgrades
 1. open `worker.config.json` in the editor
 1. setup your credentials for notification in the `worker.config.json`  
     - recipient all reports will be sent to this email
-    - google account and password to have access for sending emails
-        * if you don't want to place your google account just make new google account for these goals.
-        * Please check this article to Enable IMAP [https://support.google.com/mail/answer/7126229?hl=en](https://support.google.com/mail/answer/7126229?hl=en)
+    - Setup `MailJet` credentials to have access for sending emails
+        * Create account [https://www.mailjet.com/](https://www.mailjet.com/)
+        * Take from `MailJet`
+            - API Public Key (SMTP username)
+            - API Secret Key (SMTP password)
+        * Place them as `API_KEY` and `API_KEY_PRIVATE` in the notification MailJet
+        * Setup in `worker.config.json` notifcation MailJet section. 
+            - `"FromName": "Your Name Or Your Service Name"` it will be friendly user address name for ex. `Slava` or `United Worker`.
+            - `"FromEmail": "sender-email@yourdomain.com"` it should be email that has access to send emails by MailJet
+
 1. setup your jobs by example in the `worker.config.json` jobs section, its array
     - please pay your attention on `"period": "0 */10 * * * *"` 
     - its cron schedule by default it will check updates every `10 mins` more info about schedule [https://www.npmjs.com/package/cron](https://www.npmjs.com/package/cron) or unix/linux cron schedule 
