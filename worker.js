@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var moment = require('moment');
 
 function CronJob(schedule, job, handler) {
     var CronJob = require('cron').CronJob;
@@ -10,14 +11,14 @@ function CronJob(schedule, job, handler) {
             handler(job, function (err) {
 
                 if (err) {
-                    console.log('ERROR JOB', job, err, err.stack);
+                    console.log('[ERROR]', job, err, err.stack);
                     console.error(err);
                 }
 
                 inProgress = false;
             });
         } else {
-            console.log('waiting ...');
+            console.log('[CRON] waiting...');
         }
 
     }, null, true, 'America/Los_Angeles');
@@ -78,6 +79,21 @@ new CronJobsHandler(workerConfig, function (job, next) {
     var exec = require('child_process').exec;
     var maxBuffer = 1024 * 1024 * 1024;
 
+    var startDate = moment(new Date(job.start)).startOf('day');
+    var endDate = moment(new Date(job.end)).endOf('day');
+
+    if (moment() > endDate) {
+        console.log('[SKIPPED JOB]', '`' + job.title + '`', 'reason: out of date range');
+        return next();
+    }
+
+    if (startDate < moment()) {
+        var fromStart = job.start;
+        job.start = moment().format('M/DD/YYYY');
+        console.log('[FIXED DATE]', '`' + job.title + '`', 'reason: start date out of range', 'FROM: ' + fromStart, 'TO: ' + job.start);
+    }
+
+    // console.log('[JOB]', '`' + job.title + '`');
     var command = 'node ./united.js ' + job.origin + ' ' + job.destination + ' ' + job.start + ' ' + job.end;
     command += ' --worker-request';
 
@@ -85,7 +101,7 @@ new CronJobsHandler(workerConfig, function (job, next) {
         command += ' --direct-only'
     }
 
-    console.log('> ' + command);
+    console.log('[JOB] > ' + command);
 
     exec(command, {maxBuffer: maxBuffer}, function (error, stdout, stderr) {
         if (error !== null) {
