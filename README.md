@@ -15,7 +15,7 @@ United Upgrades
 1. `cp worker.config.json.dist worker.config.json` copy default config
 1. open `worker.config.json` in the editor
 1. setup your credentials for notification in the `worker.config.json`  
-    - recipient all reports will be sent to this email
+    - `recipient` all reports will be sent to this email
     - Setup `MailJet` credentials to have access for sending emails
         * Create account [https://www.mailjet.com/](https://www.mailjet.com/)
         * Take from `MailJet`
