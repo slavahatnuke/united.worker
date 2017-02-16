@@ -7,7 +7,13 @@ function CronJob(schedule, job, handler) {
         if (!inProgress) {
             inProgress = true;
 
-            handler(job, function () {
+            handler(job, function (err) {
+
+                if (err) {
+                    console.log('ERROR JOB', job, err, err.stack);
+                    console.error(err);
+                }
+
                 inProgress = false;
             });
         } else {
@@ -17,58 +23,66 @@ function CronJob(schedule, job, handler) {
     }, null, true, 'America/Los_Angeles');
 }
 
-function JobMailer(settings) {
-    var nodemailer = require('nodemailer');
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: settings.credentials.googleAccount,
-            pass: settings.credentials.googlePassword
-        }
-    });
+function MailJetMailer(config) {
+    var Mailjet = require('node-mailjet').connect(
+        config.API_KEY,
+        config.API_KEY_PRIVATE
+    );
 
-// setup email data with unicode symbols
+    var sendEmail = Mailjet.post('send');
+
+    this.send = function (mail, next) {
+        var emailData = {
+            "FromEmail": config.FromEmail,
+            'FromName': config.FromName,
+            'Subject': mail.subject,
+            'Text-part': mail.text,
+            'Recipients': [{'Email': mail.to}],
+            'Attachments': []
+        };
+
+        sendEmail
+            .request(emailData)
+            .then(function (result) {
+                next(null, result);
+            })
+            .catch(next);
+    }
+}
+
+function JobMailer(mailer, recipient) {
     this.send = function (job, text, next) {
         var mail = {
-            from: settings.credentials.googleAccount, // sender address
-            to: settings.recipient, // list of receivers
-            subject: job.title, // Subject line
+            to: recipient,
+            subject: job.title,
             text: text
         };
 
-        // console.log('mail', mail);
-        // next();
-
-        transporter.sendMail(mail, function (error, info) {
-            if (error) {
-                return console.log(error);
-            }
-            console.log('Message %s sent: %s', info.messageId, info.response);
-
-            next(error);
-        });
+        mailer.send(mail, next);
     }
 }
 
 
-function CronJobsHandler(jobsConfig, handler) {
-    this.jobs = _.map(jobsConfig, function (job) {
-        return new CronJob(job.period, job, handler);
+function CronJobsHandler(workerConfig, handler) {
+    this.jobs = _.map(workerConfig.jobs, function (job) {
+        return new CronJob(job.period || workerConfig.notification.defaultJobPeriod, job, handler);
     });
 }
 
 var workerConfig = require('./worker.config.json');
-var jobMailer = new JobMailer(workerConfig.notification);
+var mailer = new MailJetMailer(workerConfig.notification.credentials.MailJet);
 
-new CronJobsHandler(workerConfig.jobs, function (job, next) {
+var jobMailer = new JobMailer(mailer, workerConfig.notification.recipient);
+
+new CronJobsHandler(workerConfig, function (job, next) {
     var exec = require('child_process').exec;
     var maxBuffer = 1024 * 1024 * 1024;
 
     var command = 'node ./united.js ' + job.origin + ' ' + job.destination + ' ' + job.start + ' ' + job.end;
     command += ' --worker-request';
 
-    if(job.directOnly) {
-      command += ' --direct-only'
+    if (job.directOnly) {
+        command += ' --direct-only'
     }
 
     console.log('> ' + command);

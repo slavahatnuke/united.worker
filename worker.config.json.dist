@@ -1,14 +1,21 @@
 {
   "notification": {
-    "recipient": "slava.hatnuke@gmail.com",
+
+    "recipient": "YOUR_EMAIL_OR_SPECIFIC_EMAIL@email.com",
+
     "credentials": {
-      "googleAccount": "some.google.email@gmail.com",
-      "googlePassword": "pass-here"
-    }
+      "MailJet": {
+        "FromName": "Your Name",
+        "FromEmail":"YOUR_EMAIL@email.com",
+        "API_KEY": "DROP_IN_YOUR_KEY_HERE",
+        "API_KEY_PRIVATE": "DROP_IN_YOUR_PRIVATE_KEY_HERE"
+      }
+    },
+    "defaultJobPeriod": "0 */10 * * * *"
   },
   "jobs": [
     {
-      "title": "EWR > ORD Direct Only",
+      "title": "GAE /10 mins/ EWR > ORD Direct Only",
       "origin": "EWR",
       "destination": "ORD",
       "start": "2/24/2017",
@@ -17,7 +24,7 @@
       "period": "0 */10 * * * *"
     },
     {
-      "title": "EWR > ORD",
+      "title": "GAE /10 mins/ EWR > ORD",
       "origin": "EWR",
       "destination": "ORD",
       "start": "2/24/2017",
