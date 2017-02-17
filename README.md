@@ -5,10 +5,12 @@ United Upgrades
 
 ## How to deploy on Google App Engine
 1. Open [https://console.cloud.google.com](https://console.cloud.google.com)
+1. Add billing details for your account
 1. Create project for example `united-worker-production`
 1. Install google cloud tool `gcloud` [https://cloud.google.com/sdk/](https://cloud.google.com/sdk/)
 1. Open Terminal
-1. `gcloud init` it will ask you to login and select your project
+1. `gcloud init` it will ask you reconfigure(answer: yes) to login(answer: yes) and select your project.
+1. Please skip step with Google Compute Engine - answer is `n` 
 1. Install [Node.js](https://nodejs.org)
 1. Extract app from ZIP
 1. `npm install` - setup app dependencies
@@ -32,7 +34,7 @@ United Upgrades
 1. `npm start` it will start app locally and you can debug your configuration
     - you can setup `"period": "*/30 * * * * *"` it will grab updates every `30 secs` its good option to setup app
     - please revert this back for production to `"period": "0 */10 * * * *"`
-1. `npm run deploy` - when you setup all jobs and notifications just deploy this.
+1. `npm run deploy` - when you setup all jobs and notifications just deploy this. It will ask for region please select `flex` supported.
 
     
 ## united.js tool
